@@ -149,7 +149,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Sidebar with navigation with st.sidebar:
-    st.markdown("""
+st.markdown("""
         <h2 style="text-align: center; margin-bottom: 20px;">Retail Forecasting</h2>
     """, unsafe_allow_html=True)
     
