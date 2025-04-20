@@ -198,10 +198,10 @@ if selected == "Dashboard":
     # -------- Overview Tab --------
     with dashboard_tabs[0]:
         st.header("📊 Retail Sales Overview")
-        st.markdown("Analyze historical sales data and discover trends")
+    st.markdown("Analyze historical sales data and discover trends")
         
         # Key metrics
-        st.markdown("### 📈 Key Performance Indicators")
+    st.markdown("### 📈 Key Performance Indicators")
         metrics_col1, metrics_col2, metrics_col3, metrics_col4 = st.columns(4)
         
         with metrics_col1:
@@ -232,7 +232,7 @@ if selected == "Dashboard":
                 delta=None
             )
         
-        st.markdown("---")
+    st.markdown("---")
         
         # Dataset preview with filter
         with st.expander("📋 Dataset Preview", expanded=False):
@@ -273,7 +273,7 @@ if selected == "Dashboard":
                 use_container_width=True
             )
         
-        st.markdown("---")
+    st.markdown("---")
         
         # Visualization section
         st.subheader("📊 Basic Sales Insights")
@@ -317,11 +317,11 @@ if selected == "Dashboard":
     # -------- Advanced Insights Tab --------
     with dashboard_tabs[1]:
         st.header("🔍 Advanced Analytics Insights")
-        st.markdown("Deeper analysis of sales patterns and relationships")
+    st.markdown("Deeper analysis of sales patterns and relationships")
         
         # Feature Importance Analysis
         st.subheader("Feature Importance Analysis")
-        st.markdown("Understanding key factors that influence sales performance")
+    st.markdown("Understanding key factors that influence sales performance")
         
         # Try to get feature importance from model
         try:
@@ -365,7 +365,7 @@ if selected == "Dashboard":
         
         # Outlet comparison (full width)
         st.subheader("Outlet Performance Comparison")
-        st.markdown("Radar chart comparing different outlets across multiple metrics")
+    st.markdown("Radar chart comparing different outlets across multiple metrics")
         st.plotly_chart(
             create_outlet_comparison_plot(df),
             use_container_width=True
@@ -374,7 +374,7 @@ if selected == "Dashboard":
     # -------- Time Series Tab --------
     with dashboard_tabs[2]:
         st.header("⏱️ Time Series Analysis")
-        st.markdown("Analyze sales trends over time and forecast future performance")
+    st.markdown("Analyze sales trends over time and forecast future performance")
         
         # Generate time series data
         col1, col2 = st.columns([3, 1])
@@ -420,7 +420,7 @@ if selected == "Dashboard":
         
         # Add forecasting section
         st.subheader("Sales Forecast")
-        st.markdown("Projection of future sales based on historical patterns")
+    st.markdown("Projection of future sales based on historical patterns")
         
         # Generate forecast
         forecast_fig, forecast_data = forecast_sales(ts_data, periods=forecast_weeks)
@@ -444,7 +444,7 @@ if selected == "Dashboard":
     # -------- Reports Tab --------
     with dashboard_tabs[3]:
         st.header("📝 Reports & Exports")
-        st.markdown("Generate and download customized reports")
+    st.markdown("Generate and download customized reports")
         
         # Options for report generation
         st.subheader("Configure Report")
@@ -543,7 +543,7 @@ elif selected == "Predict Sales":
     
     with predict_tabs[0]:
         # Form in a card-like container
-        st.markdown("""
+    st.markdown("""
             <div style='background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);'>
             <h3 style='margin-bottom: 15px;'>Enter Product & Outlet Details</h3>
             </div>
@@ -715,7 +715,7 @@ elif selected == "Predict Sales":
         st.subheader("Advanced Prediction Options")
         
         # Batch prediction section
-        st.markdown("""
+    st.markdown("""
             <div style='background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);'>
             <h3 style='margin-bottom: 15px;'>Batch Prediction</h3>
             <p>Upload a CSV file with multiple records to get predictions in batch.</p>
@@ -799,7 +799,7 @@ elif selected == "Predict Sales":
                 st.error(f"Error processing file: {e}")
         
         # Model information
-        st.markdown("""
+    st.markdown("""
             <div style='background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-top: 20px;'>
             <h3 style='margin-bottom: 15px;'>Model Information</h3>
             </div>
