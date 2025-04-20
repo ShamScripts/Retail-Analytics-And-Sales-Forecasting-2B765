@@ -198,10 +198,10 @@ if selected == "Dashboard":
     # -------- Overview Tab --------
     with dashboard_tabs[0]:
         st.header("📊 Retail Sales Overview")
-    st.markdown("Analyze historical sales data and discover trends")
+        st.markdown("Analyze historical sales data and discover trends")
         
         # Key metrics
-    st.markdown("### 📈 Key Performance Indicators")
+        st.markdown("### 📈 Key Performance Indicators")
         metrics_col1, metrics_col2, metrics_col3, metrics_col4 = st.columns(4)
         
         with metrics_col1:
