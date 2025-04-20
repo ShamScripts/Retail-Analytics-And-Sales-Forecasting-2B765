@@ -1,0 +1,125 @@
+import pandas as pd
+import numpy as np
+import joblib
+import matplotlib.pyplot as plt
+import seaborn as sns
+import streamlit as st
+from streamlit_option_menu import option_menu
+from PIL import Image
+
+# Load model and dataset metadata
+model = joblib.load("model/bigmart_model.pkl")
+dataset_path = "datasets/train.csv"
+
+# Set page config
+st.set_page_config(page_title="Retail Forecasting Dashboard", layout="wide", page_icon="🛍️")
+
+# Custom styling
+st.markdown("""
+    <style>
+        .main {background-color: #f7f9fb;}
+        .block-container {padding-top: 1rem; padding-bottom: 2rem;}
+        h1, h2, h3 {color: #2E3B55;}
+        .stButton>button {background-color: #4CAF50; color: white; border: none; padding: 10px 20px;}
+        .stButton>button:hover {background-color: #45a049;}
+        .stSelectbox, .stNumberInput {font-size: 16px;}
+    </style>
+""", unsafe_allow_html=True)
+
+# Sidebar with navigation
+with st.sidebar:
+    selected = option_menu(
+        menu_title="Retail Forecasting",
+        options=["Dashboard", "Predict Sales"],
+        icons=["bar-chart-line", "graph-up-arrow"],
+        menu_icon="shop",
+        default_index=0,
+    )
+
+# Load and preprocess data
+def load_and_preprocess():
+    df = pd.read_csv(dataset_path)
+    df['Item_Weight'] = df['Item_Weight'].interpolate(method='linear')
+    df['Item_Visibility'] = df['Item_Visibility'].replace(0, np.nan).interpolate(method='linear')
+    df['Item_Identifier'] = df['Item_Identifier'].apply(lambda x: x[:2])
+    df['Outlet_age'] = 2025 - df['Outlet_Establishment_Year']
+    df.replace({'Item_Fat_Content': {'Low Fat': 'LF', 'low fat': 'LF', 'reg': 'Regular'}}, inplace=True)
+    df.drop(['Outlet_Establishment_Year'], axis=1, inplace=True)
+    return df
+
+# =================== Dashboard ===================
+if selected == "Dashboard":
+    st.title("Retail Sales Analysis Dashboard")
+    df = load_and_preprocess()
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader("Sample Preview")
+        st.dataframe(df.sample(5).style.set_caption("Random Rows from Dataset"))
+
+    with col2:
+        st.subheader("Summary Statistics")
+        st.dataframe(df.describe().style.set_caption("Numerical Feature Summary"))
+
+    st.markdown("---")
+    st.subheader("Exploratory Visualizations")
+
+    tab1, tab2, tab3 = st.tabs(["Item MRP", "Outlet Size", "Outlet Type"])
+
+    with tab1:
+        fig, ax = plt.subplots()
+        sns.histplot(df['Item_MRP'], kde=True, color='#007acc', ax=ax)
+        ax.set_title("Distribution of Item MRP")
+        st.pyplot(fig)
+
+    with tab2:
+        fig, ax = plt.subplots()
+        sns.boxplot(x='Outlet_Size', y='Item_Outlet_Sales', data=df, palette='viridis', ax=ax)
+        ax.set_title("Sales Distribution by Outlet Size")
+        st.pyplot(fig)
+
+    with tab3:
+        fig, ax = plt.subplots()
+        sns.violinplot(x='Outlet_Type', y='Item_Outlet_Sales', data=df, palette='Set2', ax=ax)
+        ax.set_title("Sales Distribution by Outlet Type")
+        plt.xticks(rotation=45)
+        st.pyplot(fig)
+
+    st.markdown("---")
+    st.subheader("Correlation Heatmap")
+    fig, ax = plt.subplots(figsize=(10, 5))
+    sns.heatmap(df.select_dtypes(include='number').corr(), annot=True, cmap='coolwarm', ax=ax)
+    st.pyplot(fig)
+
+# =================== Predict Sales ===================
+elif selected == "Predict Sales":
+    st.title("Forecast Item Outlet Sales")
+    st.markdown("Enter item and outlet attributes to predict sales using our trained model.")
+
+    with st.form("predict_form"):
+        col1, col2 = st.columns(2)
+        with col1:
+            item_mrp = st.number_input("Item MRP", min_value=0.0, step=1.0)
+            outlet_identifier = st.selectbox("Outlet Identifier", ['OUT010', 'OUT013', 'OUT017', 'OUT018', 'OUT019', 'OUT027', 'OUT035', 'OUT045', 'OUT046', 'OUT049'])
+        with col2:
+            outlet_size = st.selectbox("Outlet Size", ['Small', 'Medium', 'High'])
+            outlet_type = st.selectbox("Outlet Type", ['Grocery Store', 'Supermarket Type1', 'Supermarket Type2', 'Supermarket Type3'])
+
+        est_year = st.number_input("Outlet Establishment Year", min_value=1985, max_value=2024, step=1)
+        submitted = st.form_submit_button("🔍 Predict")
+
+    if submitted:
+        outlet_id_map = {k: i for i, k in enumerate(['OUT010', 'OUT013', 'OUT017', 'OUT018', 'OUT019', 'OUT027', 'OUT035', 'OUT045', 'OUT046', 'OUT049'])}
+        outlet_size_map = {'High': 0, 'Medium': 1, 'Small': 2}
+        outlet_type_map = {'Grocery Store': 0, 'Supermarket Type1': 1, 'Supermarket Type2': 2, 'Supermarket Type3': 3}
+
+        outlet_id = outlet_id_map[outlet_identifier]
+        outlet_sz = outlet_size_map[outlet_size]
+        outlet_tp = outlet_type_map[outlet_type]
+        outlet_age = 2025 - est_year
+
+        features = np.array([[item_mrp, outlet_id, outlet_sz, outlet_tp, outlet_age]])
+        prediction = model.predict(features)[0]
+
+        st.success(f"Predicted Sales Value: ₹{prediction:.2f}")
+        st.info(f"Estimated Sales Range: ₹{prediction - 714.42:.2f} to ₹{prediction + 714.42:.2f}")
