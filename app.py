@@ -14,7 +14,7 @@ from utils import load_and_preprocess, format_currency, get_sales_status
 from utils_report import create_pdf_report, get_download_link, export_to_excel, get_excel_download_link
 from visualizations import create_mrp_plot, create_outlet_size_plot, create_outlet_type_plot, create_correlation_heatmap
 from additional_visualizations import (create_feature_importance_plot, create_product_category_plot, 
-                                   create_outlet_comparison_plot, create_mrp_sales_scatter)
+                                        create_outlet_comparison_plot, create_mrp_sales_scatter)
 from time_series import generate_time_series_data, create_time_series_plot, forecast_sales
 
 # Import the advanced model
@@ -148,8 +148,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Sidebar with navigation
-with st.sidebar:
+# Sidebar with navigation with st.sidebar:
     st.markdown("""
         <h2 style="text-align: center; margin-bottom: 20px;">Retail Forecasting</h2>
     """, unsafe_allow_html=True)
@@ -232,7 +231,7 @@ if selected == "Dashboard":
                 delta=None
             )
         
-    st.markdown("---")
+        st.markdown("---")
         
         # Dataset preview with filter
         with st.expander("📋 Dataset Preview", expanded=False):
@@ -273,7 +272,7 @@ if selected == "Dashboard":
                 use_container_width=True
             )
         
-    st.markdown("---")
+        st.markdown("---")
         
         # Visualization section
         st.subheader("📊 Basic Sales Insights")
@@ -288,40 +287,40 @@ if selected == "Dashboard":
         
         with tab1:
             fig = create_mrp_plot(df)
-    if fig:
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.warning('⚠️ Could not generate plot: ' + str(create_mrp_plot(df)))
+            if fig:
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.warning('⚠️ Could not generate plot: ' + str(create_mrp_plot(df)))
         
         with tab2:
             fig = create_outlet_size_plot(df)
-    if fig:
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.warning('⚠️ Could not generate plot: ' + str(create_outlet_size_plot(df)))
+            if fig:
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.warning('⚠️ Could not generate plot: ' + str(create_outlet_size_plot(df)))
         
         with tab3:
             fig = create_outlet_type_plot(df)
-    if fig:
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.warning('⚠️ Could not generate plot: ' + str(create_outlet_type_plot(df)))
+            if fig:
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.warning('⚠️ Could not generate plot: ' + str(create_outlet_type_plot(df)))
             
         with tab4:
             fig = create_correlation_heatmap(df)
-    if fig:
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.warning('⚠️ Could not generate plot: ' + str(create_correlation_heatmap(df)))
+            if fig:
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.warning('⚠️ Could not generate plot: ' + str(create_correlation_heatmap(df)))
     
     # -------- Advanced Insights Tab --------
     with dashboard_tabs[1]:
         st.header("🔍 Advanced Analytics Insights")
-    st.markdown("Deeper analysis of sales patterns and relationships")
+        st.markdown("Deeper analysis of sales patterns and relationships")
         
         # Feature Importance Analysis
         st.subheader("Feature Importance Analysis")
-    st.markdown("Understanding key factors that influence sales performance")
+        st.markdown("Understanding key factors that influence sales performance")
         
         # Try to get feature importance from model
         try:
@@ -365,7 +364,7 @@ if selected == "Dashboard":
         
         # Outlet comparison (full width)
         st.subheader("Outlet Performance Comparison")
-    st.markdown("Radar chart comparing different outlets across multiple metrics")
+        st.markdown("Radar chart comparing different outlets across multiple metrics")
         st.plotly_chart(
             create_outlet_comparison_plot(df),
             use_container_width=True
@@ -374,7 +373,7 @@ if selected == "Dashboard":
     # -------- Time Series Tab --------
     with dashboard_tabs[2]:
         st.header("⏱️ Time Series Analysis")
-    st.markdown("Analyze sales trends over time and forecast future performance")
+        st.markdown("Analyze sales trends over time and forecast future performance")
         
         # Generate time series data
         col1, col2 = st.columns([3, 1])
@@ -420,15 +419,14 @@ if selected == "Dashboard":
         
         # Add forecasting section
         st.subheader("Sales Forecast")
-    st.markdown("Projection of future sales based on historical patterns")
+        st.markdown("Projection of future sales based on historical patterns")
         
         # Generate forecast
         forecast_fig, forecast_data = forecast_sales(ts_data, periods=forecast_weeks)
-    if forecast_fig:
-        st.plotly_chart(forecast_fig, use_container_width=True)
-    else:
-        st.warning('⚠️ Forecast plot could not be generated')
-        st.plotly_chart(forecast_fig, use_container_width=True)
+        if forecast_fig:
+            st.plotly_chart(forecast_fig, use_container_width=True)
+        else:
+            st.warning('⚠️ Forecast plot could not be generated')
         
         # Show forecast data in a table
         with st.expander("View Forecast Data", expanded=False):
@@ -436,7 +434,7 @@ if selected == "Dashboard":
                 forecast_data.style.format({
                     'Forecasted_Sales': '₹{:.2f}',
                     'Lower_Bound': '₹{:.2f}',
-                    'Upper_Bound': '₹{:.2f}'
+                    'Upper _Bound': '₹{:.2f}'
                 }),
                 use_container_width=True
             )
@@ -444,7 +442,7 @@ if selected == "Dashboard":
     # -------- Reports Tab --------
     with dashboard_tabs[3]:
         st.header("📝 Reports & Exports")
-    st.markdown("Generate and download customized reports")
+        st.markdown("Generate and download customized reports")
         
         # Options for report generation
         st.subheader("Configure Report")
@@ -543,7 +541,7 @@ elif selected == "Predict Sales":
     
     with predict_tabs[0]:
         # Form in a card-like container
-    st.markdown("""
+        st.markdown("""
             <div style='background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);'>
             <h3 style='margin-bottom: 15px;'>Enter Product & Outlet Details</h3>
             </div>
@@ -572,7 +570,7 @@ elif selected == "Predict Sales":
                 
                 outlet_size = st.selectbox(
                     "Outlet Size", 
-                    ['Small', 'Medium', 'High'],
+                    ['Small', 'Medium', ' High'],
                     help="Size classification of the outlet"
                 )
             
@@ -693,7 +691,7 @@ elif selected == "Predict Sales":
                     
                     # Load data for report
                     df = load_and_preprocess(dataset_path)
-    st.write('✅ DataFrame loaded. Shape:', df.shape)
+                    st.write('✅ DataFrame loaded. Shape:', df.shape)
                     
                     # Generate PDF report
                     pdf_bytes = create_pdf_report(df, prediction_info, feature_imp)
@@ -715,7 +713,7 @@ elif selected == "Predict Sales":
         st.subheader("Advanced Prediction Options")
         
         # Batch prediction section
-    st.markdown("""
+        st.markdown("""
             <div style='background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);'>
             <h3 style='margin-bottom: 15px;'>Batch Prediction</h3>
             <p>Upload a CSV file with multiple records to get predictions in batch.</p>
@@ -799,7 +797,7 @@ elif selected == "Predict Sales":
                 st.error(f"Error processing file: {e}")
         
         # Model information
-    st.markdown("""
+        st.markdown("""
             <div style='background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-top: 20px;'>
             <h3 style='margin-bottom: 15px;'>Model Information</h3>
             </div>
