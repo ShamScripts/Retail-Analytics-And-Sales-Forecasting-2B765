@@ -256,8 +256,7 @@ if selected == "Dashboard":
             
             st.dataframe(
                 displayed_data,
-                use_container_width=True,
-                hide_index=True
+                use_container_width=True 
             )
             
             col1, col2 = st.columns(2)
