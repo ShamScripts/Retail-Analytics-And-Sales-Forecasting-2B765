@@ -101,4 +101,8 @@ Pull requests and improvements are welcome! For major changes, please open an is
 
 ## 📬 Contact
 
-For inquiries, contact the maintainers via GitHub Issues or Discussions.
+For inquiries, feel free to reach out via:
+
+- [LinkedIn](https://www.linkedin.com/in/shamscript009)  
+- [Gmail](mailto:f20230009@dubai.bits-pilani.ac.in)
+
